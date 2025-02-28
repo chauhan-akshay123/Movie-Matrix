@@ -106,8 +106,8 @@ GET /api/movies/sort?list=watchlist&sortBy=rating&order=ASC
 ### 1. Clone the Repository
 
 ```
-git clone https://github.com/yourusername/CineCuration.git
-cd CineCuration
+git clone https://github.com/yourusername/Movie-Matrix.git
+cd Movie-Matrix
 ```
 
 ### 2. Install Dependencies
