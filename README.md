@@ -154,3 +154,6 @@ Use Postman or cURL to test API endpoints.
 | curated_list_item  | id          | curatedListId → curated_list.id, movieId → movies.id | Many-to-Many: A curated list can have multiple movies, and a movie can be in multiple curated lists. |
 
 
+<img align="right"  alt="Coding"  width="600" src="https://github.com/chauhan-akshay123/Movie-Matrix/blob/main/Movie_matri_DB.png">
+
+
