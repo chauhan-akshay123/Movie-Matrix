@@ -141,4 +141,16 @@ npm start
 
 Use Postman or cURL to test API endpoints.
 
+## Database Design 
+
+| Table Name         | Primary Key | Foreign Keys                          | Relationship Type                                                                 |
+|--------------------|-------------|---------------------------------------|-----------------------------------------------------------------------------------|
+| users              | id          | -                                     | A user can have multiple reviews, watchlists, wishlists, and curated lists.       |
+| movies             | id          | -                                     | A movie can have multiple reviews and appear in multiple lists.                   |
+| reviews            | id          | userId → users.id, movieId → movies.id | One-to-Many: A user can write multiple reviews, and each review belongs to a movie.|
+| watchlist          | id          | userId → users.id, movieId → movies.id | Many-to-Many: A user can add multiple movies to their watchlist, and a movie can be in multiple users' watchlists. |
+| wishlist           | id          | userId → users.id, movieId → movies.id | Many-to-Many: A user can add multiple movies to their wishlist, and a movie can be in multiple users' wishlists. |
+| curated_list       | id          | userId → users.id                     | One-to-Many: A user can create multiple curated lists.                            |
+| curated_list_item  | id          | curatedListId → curated_list.id, movieId → movies.id | Many-to-Many: A curated list can have multiple movies, and a movie can be in multiple curated lists. |
+
 
