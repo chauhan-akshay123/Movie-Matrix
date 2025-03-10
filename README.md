@@ -27,15 +27,15 @@ Movie Matrix is a movie curation and management platform that allows users to or
 ## API Endpoints
 
 ### 1. Get All Movies
+**Endpoint:** `GET /api/movies`  
+**Description:** Fetches all movies from the database.  
 
-**Endpoint:** `GET /api/movies`
-**Description:** Fetches all movies from the database.
-**Response:**
-
+#### Response:
 ```json
 {
     "movies": [
         {
+            "id": "1",
             "title": "Inception",
             "genre": "Action, Sci-Fi",
             "actors": "Leonardo DiCaprio, Joseph Gordon-Levitt",
@@ -46,46 +46,201 @@ Movie Matrix is a movie curation and management platform that allows users to or
 }
 ```
 
+---
+
 ### 2. Search Movies by Genre and Actor
+**Endpoint:** `GET /api/movies/searchByGenreAndActor`  
+**Query Parameters:**  
+- `genre` (optional)  
+- `actor` (optional)  
 
-**Endpoint:** `GET /api/movies/search`
-**Query Parameters:**
-
-- `genre` (optional)
-- `actor` (optional)
-  **Example Request:**
-
+#### Example Request:
 ```
-GET /api/movies/search?genre=Action&actor=Leonardo%20DiCaprio
+GET /api/movies/searchByGenreAndActor?genre=Action&actor=Leonardo%20DiCaprio
 ```
 
-**Response:**
-
+#### Response:
 ```json
 {
-    "movies": []
+    "movies": [
+        {
+            "id": "1",
+            "title": "Inception",
+            "genre": "Action, Sci-Fi",
+            "actors": "Leonardo DiCaprio, Joseph Gordon-Levitt",
+            "releaseYear": 2010,
+            "rating": 8.8
+        }
+    ]
 }
 ```
 
-### 3. Sort Movies
+---
 
-**Endpoint:** `GET /api/movies/sort`
-**Query Parameters:**
+### 3. Add a Movie to Watchlist
+**Endpoint:** `POST /api/movies/watchlist`  
+**Description:** Adds a movie to the user's watchlist.  
 
-- `list` (watchlist, wishlist, curatedlist)
-- `sortBy` (rating, releaseYear)
-- `order` (ASC, DESC)
-  **Example Request:**
+#### Request:
+```json
+{
+    "userId": "123",
+    "movieId": "1"
+}
+```
 
+#### Response:
+```json
+{
+    "message": "Movie added to watchlist successfully"
+}
+```
+
+---
+
+### 4. Add a Movie to Wishlist
+**Endpoint:** `POST /api/movies/wishlist`  
+**Description:** Adds a movie to the user's wishlist.  
+
+#### Request:
+```json
+{
+    "userId": "123",
+    "movieId": "1"
+}
+```
+
+#### Response:
+```json
+{
+    "message": "Movie added to wishlist successfully"
+}
+```
+
+---
+
+### 5. Create a Curated List
+**Endpoint:** `POST /api/curated-lists`  
+**Description:** Creates a new curated movie list.  
+
+#### Request:
+```json
+{
+    "userId": "123",
+    "listName": "Best Sci-Fi Movies"
+}
+```
+
+#### Response:
+```json
+{
+    "message": "Curated list created successfully",
+    "curatedListId": "456"
+}
+```
+
+---
+
+### 6. Update a Curated List
+**Endpoint:** `PUT /api/curated-lists/:curatedListId`  
+**Description:** Updates the details of an existing curated list.  
+
+#### Request:
+```json
+{
+    "listName": "Updated List Name"
+}
+```
+
+#### Response:
+```json
+{
+    "message": "Curated list updated successfully"
+}
+```
+
+---
+
+### 7. Add a Movie to a Curated List
+**Endpoint:** `POST /api/movies/curated-list`  
+**Description:** Adds a movie to an existing curated list.  
+
+#### Request:
+```json
+{
+    "curatedListId": "456",
+    "movieId": "1"
+}
+```
+
+#### Response:
+```json
+{
+    "message": "Movie added to curated list successfully"
+}
+```
+
+---
+
+### 8. Add a Review to a Movie
+**Endpoint:** `POST /api/movies/:movieId/reviews`  
+**Description:** Allows a user to review a movie.  
+
+#### Request:
+```json
+{
+    "userId": "123",
+    "reviewText": "Amazing movie with a great plot!",
+    "rating": 9.0
+}
+```
+
+#### Response:
+```json
+{
+    "message": "Review added successfully"
+}
+```
+
+---
+
+### 9. Sort Movies in a List
+**Endpoint:** `GET /api/movies/sort`  
+**Query Parameters:**  
+- `list` (watchlist, wishlist, curatedlist)  
+- `sortBy` (rating, releaseYear)  
+- `order` (ASC, DESC)  
+
+#### Example Request:
 ```
 GET /api/movies/sort?list=watchlist&sortBy=rating&order=ASC
 ```
 
-### 4. Get Top 5 Movies by Rating with Reviews
+#### Response:
+```json
+{
+    "movies": [
+        {
+            "title": "Interstellar",
+            "releaseYear": 2014,
+            "rating": 8.6
+        },
+        {
+            "title": "Inception",
+            "releaseYear": 2010,
+            "rating": 8.8
+        }
+    ]
+}
+```
 
-**Endpoint:** `GET /api/movies/top5`
-**Response:**
+---
 
+### 10. Get Top 5 Movies by Rating with Reviews
+**Endpoint:** `GET /api/movies/top5`  
+**Description:** Fetches the top 5 highest-rated movies along with reviews.  
+
+#### Response:
 ```json
 {
     "movies": [
@@ -96,10 +251,37 @@ GET /api/movies/sort?list=watchlist&sortBy=rating&order=ASC
                 "text": "Great movie with a brilliant plot.",
                 "wordCount": 6
             }
+        },
+        {
+            "title": "The Dark Knight",
+            "rating": 9.0,
+            "review": {
+                "text": "Masterpiece with a legendary performance.",
+                "wordCount": 5
+            }
         }
     ]
 }
 ```
+
+---
+
+## API Route Mapping
+
+| Route | HTTP Method | Description |
+|--------|------------|-------------|
+| `/api/movies` | `GET` | Fetch all movies |
+| `/api/movies/searchByGenreAndActor` | `GET` | Search movies by genre and actor |
+| `/api/movies/watchlist` | `POST` | Add movie to watchlist |
+| `/api/movies/wishlist` | `POST` | Add movie to wishlist |
+| `/api/curated-lists` | `POST` | Create a curated list |
+| `/api/curated-lists/:curatedListId` | `PUT` | Update a curated list |
+| `/api/movies/curated-list` | `POST` | Add movie to curated list |
+| `/api/movies/:movieId/reviews` | `POST` | Add review to a movie |
+| `/api/movies/sort` | `GET` | Sort movies by rating or release year |
+| `/api/movies/top5` | `GET` | Fetch top 5 movies with reviews |
+
+---
 
 ## Setup Instructions
 
